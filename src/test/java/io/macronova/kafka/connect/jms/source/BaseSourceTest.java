@@ -27,6 +27,7 @@ import jakarta.jms.MessageProducer;
 import jakarta.jms.Session;
 import jakarta.jms.Topic;
 
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 import io.macronova.kafka.connect.jms.util.StringUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import io.macronova.kafka.connect.jms.BaseFunctionalTest;
@@ -77,7 +78,7 @@ public abstract class BaseSourceTest extends BaseFunctionalTest {
 	 * @throws Exception Indicates failure.
 	 */
 	protected void registerDurableSubscription(String selector) throws Exception {
-		final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( providerUrl() );
+		final ConnectionFactory connectionFactory = JmsUtils.asJakartaConnectionFactory(new ActiveMQConnectionFactory( providerUrl() ));
 		final Connection connection = connectionFactory.createConnection();
 		connection.setClientID( clientId() );
 		connection.start();
@@ -102,7 +103,7 @@ public abstract class BaseSourceTest extends BaseFunctionalTest {
 	 * @throws Exception Indicates failure.
 	 */
 	protected void sendMessages(String[] msgs, boolean includeSequenceProperty) throws Exception {
-		final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( providerUrl() );
+		final ConnectionFactory connectionFactory = JmsUtils.asJakartaConnectionFactory(new ActiveMQConnectionFactory( providerUrl() ));
 		final Connection connection = connectionFactory.createConnection();
 		connection.start();
 		final Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );

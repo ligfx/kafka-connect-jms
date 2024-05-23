@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import jakarta.jms.ConnectionFactory;
 
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import io.macronova.kafka.connect.jms.common.JmsDialect;
 
@@ -32,7 +33,7 @@ public class CustomJmsDialect implements JmsDialect {
 	@Override
 	public ConnectionFactory createConnectionFactory(Map<String, String> config) throws Exception {
 		factoryCalled.set( true );
-		return new ActiveMQConnectionFactory( config.get( "jms.url" ) );
+		return JmsUtils.asJakartaConnectionFactory(new ActiveMQConnectionFactory( config.get( "jms.url" ) ));
 	}
 
 	@Override

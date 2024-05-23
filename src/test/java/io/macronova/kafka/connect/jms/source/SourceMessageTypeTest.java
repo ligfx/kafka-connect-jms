@@ -31,6 +31,7 @@ import jakarta.jms.Session;
 import org.junit.Assert;
 import org.junit.Test;
 
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -96,7 +97,7 @@ public class SourceMessageTypeTest extends BaseSourceTest {
 	}
 
 	private SourceRecord captureSourceRecord(Map<String, String> configuration, JmsMessageFactory factory) throws Exception {
-		final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( providerUrl() );
+		final ConnectionFactory connectionFactory = JmsUtils.asJakartaConnectionFactory(new ActiveMQConnectionFactory( providerUrl() ));
 		final Connection connection = connectionFactory.createConnection();
 		connection.start();
 		final Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );

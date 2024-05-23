@@ -15,13 +15,30 @@
  */
 package io.macronova.kafka.connect.jms.util;
 
+import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Destination;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.Queue;
 import jakarta.jms.Topic;
+import com.github.marschall.jakartajmsadapter.JakartaConnectionFactory;
+import com.github.marschall.jakartajmsadapter.Wrapper;
 
 public abstract class JmsUtils {
+	public static ConnectionFactory asJakartaConnectionFactory(Object instance) {
+		if (instance instanceof javax.jms.ConnectionFactory) {
+			return new com.github.marschall.jakartajmsadapter.JakartaConnectionFactory( (javax.jms.ConnectionFactory) instance );
+		}
+		return (ConnectionFactory) instance;
+	}
+
+	public static Destination asJakartaDestination(Object instance)  {
+		if (instance instanceof javax.jms.Destination) {
+			return Wrapper.fromJavaxDestination( (javax.jms.Destination) instance );
+		}
+		return (Destination) instance;
+	}
+
 	public static String destinationName(Destination destination) throws JMSException {
 		if ( destination instanceof Queue ) {
 			return ( (Queue) destination ).getQueueName();

@@ -17,6 +17,7 @@ package io.macronova.kafka.connect.jms.common;
 
 import java.util.Map;
 import jakarta.jms.ConnectionFactory;
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 
 /**
  * Default JMS dialect.
@@ -28,7 +29,7 @@ public class DefaultJmsDialect implements JmsDialect {
 		final String brokerUrl = config.get( BaseConnectorConfig.JMS_URL_CONFIG );
 		// By default assume that given connection factory class will provide constructor
 		// with one argument representing broker URL.
-		return (ConnectionFactory) Class.forName( connectionFactoryClass ).getConstructor( String.class ).newInstance( brokerUrl );
+		return JmsUtils.asJakartaConnectionFactory( Class.forName( connectionFactoryClass ).getConstructor( String.class ).newInstance( brokerUrl ) );
 	}
 
 	@Override

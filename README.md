@@ -26,6 +26,10 @@ Apache Kafka JMS Connector provides sink and source capabilities to transfer mes
 2. Copy _kafka-connect-jms-${version}.jar_ with all third-party dependencies to Connect `plugin.path` directory.
     1. Version 1.0.0 depends only on Javax JMS 2.0 API JAR.
     1. Version 2.0.0 depends only on Jakarta JMS 3.0 API JAR.
+    1. Version 2.1.0 depends on:
+        - Javax JMS 2.0 API JAR
+        - Jakarta JMS 3.0 API JAR
+        - [jakarta-jms-adapter](https://github.com/marschall/jakarta-jms-adapter) 1.4.1 JAR
 3. Copy JMS client (including dependencies) of given JMS server to Connect `plugin.path` directory.
 3. Configure source and sink connectors according to below documentation.
 

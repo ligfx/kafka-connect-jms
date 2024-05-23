@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.kafka.common.record.TimestampType;
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 import io.macronova.kafka.connect.jms.TestCondition;
 import io.macronova.kafka.connect.jms.TestUtils;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -65,7 +66,7 @@ public class SinkTopicTest extends BaseSinkTest {
 	}
 
 	private void checkMessageDelivery(Map<String, String> configuration, String[][] msgs) throws Exception {
-		final ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( providerUrl() );
+		final ConnectionFactory connectionFactory = JmsUtils.asJakartaConnectionFactory(new ActiveMQConnectionFactory( providerUrl() ));
 		final Connection connection = connectionFactory.createConnection();
 		connection.start();
 		final Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );

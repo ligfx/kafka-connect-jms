@@ -26,6 +26,7 @@ import jakarta.jms.JMSException;
 import jakarta.jms.Session;
 import javax.naming.InitialContext;
 
+import io.macronova.kafka.connect.jms.util.JmsUtils;
 import io.macronova.kafka.connect.jms.util.StringUtils;
 import org.apache.kafka.connect.errors.ConnectException;
 
@@ -83,7 +84,7 @@ public class JmsSessionProvider {
 					}
 				}
 				context = new InitialContext( contextConfig );
-				factory = (ConnectionFactory) context.lookup( properties.get( BaseConnectorConfig.CONNECTION_FACTORY_NAME_CONFIG ) );
+				factory = JmsUtils.asJakartaConnectionFactory( context.lookup( properties.get( BaseConnectorConfig.CONNECTION_FACTORY_NAME_CONFIG ) ) );
 			}
 			else {
 				// Direct server access.
@@ -171,7 +172,7 @@ public class JmsSessionProvider {
 	 */
 	public Destination resolveDestination(Session session, String destination, String type) throws Exception {
 		if ( context != null ) {
-			return (Destination) context.lookup( destination );
+			return JmsUtils.asJakartaDestination( context.lookup( destination ) );
 		}
 		else if ( "topic".equals( type ) ) {
 			return session.createTopic( destination );
